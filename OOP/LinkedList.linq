@@ -176,14 +176,23 @@ void DoubleLinkedListOperations()
 	dNode.AddNode(5);
 	dNode.AddNode(6);
 	
-	Console.WriteLine("*************************************************** PRINTING DOUBLE LINKED LIST ********************************************************");	
-	dNode.PrintNodes(); 
-	
-	Console.WriteLine("*************************************************** SEARCH DOUBLE LINKED LIST ********************************************************");	
-	dNode.SearchNode(4);
+	Console.WriteLine("\n******* PRINTING DOUBLE LINKED LIST ******************************************************");	
+	dNode.PrintNodes();	
 
-	Console.WriteLine("*************************************************** DELETE DOUBLE LINKED LIST ********************************************************");
-	dNode.DeleteNode(4);
+	Console.WriteLine("\n******* SEARCH DOUBLE LINKED LIST ********************************************************");	
+	var searched = dNode.SearchNode(4);
+	Console.WriteLine("Found Node : {0}",searched==null?-1: searched.Data);
+
+	Console.WriteLine("\n******* DELETE DOUBLE LINKED LIST ********************************************************");
+	var isRemoved = dNode.DeleteNode(4);
+	Console.WriteLine("Node Deleted: {0}", isRemoved);
+
+	Console.WriteLine("\n******* PRINTING DOUBLE LINKED LIST ******************************************************");
+	dNode.PrintNodes();
+
+	Console.WriteLine("\n******* REVERSE PRINTING DOUBLE LINKED LIST **********************************************");
+	dNode.PrintNodes(dNode.Last);
+
 }
 
 public interface IAddNode<T>
@@ -211,6 +220,7 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 	}		
 	public DoubleLinkedList Previous { get; set; }
 	public DoubleLinkedList Next { get; set; }
+	public DoubleLinkedList Last {get; set; }
 	public int Data { get; set; }	
 
 	public void AddNode(int data)
@@ -223,7 +233,9 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 			node = node.Next == null ? null : node.Next;			
 		}
 		node = new DoubleLinkedList(data); 
-		node.Previous = previous; 
+		node.Previous = previous;
+		previous.Next = node; 	
+		this.Last = node; 
 	}
 
 	public bool DeleteNode(int data)
@@ -243,8 +255,10 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 				node = node.Next == null ? null : node.Next;
 			}
 		}
+		 
 		previousNode.Next = node.Next;
-
+		node.Next.Previous = previousNode;
+		
 		return found;
 	}
 
@@ -255,6 +269,15 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 		{
 			Console.Write(node.Data);
 			node = node.Next == null ? null : node.Next;
+		}
+	}
+
+	public void PrintNodes(DoubleLinkedList node)
+	{
+		while (node != null)
+		{
+			Console.Write(node.Data);
+			node = node.Previous == null ? null : node.Previous;
 		}
 	}
 
