@@ -7,7 +7,7 @@
 void Main()
 {
 	//SimpleLinkedListOperation();
-	DoubleLinkedListOperations();
+	//DoubleLinkedListOperations();
 }
 
 #region Simple LinkedList 
@@ -193,6 +193,13 @@ void DoubleLinkedListOperations()
 	Console.WriteLine("\n******* REVERSE PRINTING DOUBLE LINKED LIST **********************************************");
 	dNode.PrintNodes(dNode.Last);
 
+	Console.WriteLine("\n******* DELETE DOUBLE LINKED LIST ********************************************************");
+	isRemoved = dNode.DeleteNode(1);
+	Console.WriteLine("Node Deleted: {0}", isRemoved);
+
+	/*Console.WriteLine("\n******* PRINTING DOUBLE LINKED LIST ******************************************************");
+	dNode.PrintNodes();*/
+
 }
 
 public interface IAddNode<T>
@@ -240,13 +247,14 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 
 	public bool DeleteNode(int data)
 	{
-		bool found = false;
+		bool found = false; int count = 0;
 		DoubleLinkedList previousNode = null;
 		DoubleLinkedList node = this; 
 		while (!found)
 		{
 			if (node.Data == data)
 			{
+				count++;
 				found = true;
 			}
 			else
@@ -255,10 +263,16 @@ public class DoubleLinkedList : IAddNode<DoubleLinkedList>, IPrintNode<DoubleLin
 				node = node.Next == null ? null : node.Next;
 			}
 		}
-		 
-		previousNode.Next = node.Next;
-		node.Next.Previous = previousNode;
-		
+		 if(count == 1) 
+		 {
+		 	node = node.Next;
+			node.Previous = null;
+		 }
+		else
+		{
+			previousNode.Next = node.Next;
+			node.Next.Previous = previousNode;
+		}
 		return found;
 	}
 
