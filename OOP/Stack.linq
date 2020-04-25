@@ -10,13 +10,23 @@
 
 void Main()
 {
-	//StackTest();
+	//MyStackTest();
+	Prefix("a+b"); 
+}
+public void Prefix(string expr)
+{
+	var stack = new MyStack<char>(expr.Length); 
+	foreach(var c in expr)
+	{
+		if(
+	}
 }
 
-public void StackTest()
+
+public void MyStackTest()
 {
-	var stack = new Stack<int>(5);
-	Console.WriteLine("Is Stack Empty: {0}", stack.IsEmpty());
+	var stack = new MyStack<int>(5);
+	Console.WriteLine("Is MyStack Empty: {0}", stack.IsEmpty());
 
 	int item = 1;
 	while (stack.Push(item) == item)
@@ -25,17 +35,17 @@ public void StackTest()
 		item++;
 	}
 
-	Console.WriteLine("Stack : {0}", stack.ToString());
-	Console.WriteLine("Is Stack Full: {0}", stack.IsFull());
-	Console.WriteLine("Pushing to Stack : {0}", stack.Push(item) == item);
+	Console.WriteLine("MyStack : {0}", stack.ToString());
+	Console.WriteLine("Is MyStack Full: {0}", stack.IsFull());
+	Console.WriteLine("Pushing to MyStack : {0}", stack.Push(item) == item);
 
 	while ((item = stack.Pop()) != 0)
 	{
 		Console.WriteLine("Popped : {0}", item);
 	}
-	Console.WriteLine("Stack : {0}", stack.ToString());
-	Console.WriteLine("Is Stack empty: {0}", stack.IsEmpty());
-	Console.WriteLine("Poping from Stack : {0}", stack.Pop() != -1);
+	Console.WriteLine("MyStack : {0}", stack.ToString());
+	Console.WriteLine("Is MyStack empty: {0}", stack.IsEmpty());
+	Console.WriteLine("Poping from MyStack : {0}", stack.Pop() != -1);
 }
 
 /*[Test]
@@ -45,12 +55,12 @@ public void SomeTest()
 }*/
 
 // Define other methods and classes here
-public class Stack<T>
+public class MyStack<T>
 {
 	private T[] stack; 
 	private int top; 
 	private int size; 
-	public Stack(int size)
+	public MyStack(int size)
 	{
 		this.size = size;
 		this.stack = new T[this.size];
