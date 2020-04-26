@@ -11,17 +11,69 @@
 void Main()
 {
 	//MyStackTest();
-	Prefix("a+b"); 
+	//Console.WriteLine("Input InFix = a + b, and Output Prefix = {0}",Prefix("a+b")); 
+	Console.WriteLine("Input InFix = a + b, and Output Prefix = {0}",Prefix("(a+b)*c")); 
 }
-public void Prefix(string expr)
-{
+public string Prefix(string expr)
+{	
+	StringBuilder pre = new StringBuilder(); 
 	var stack = new MyStack<char>(expr.Length); 
 	foreach(var c in expr)
 	{
-		if(
+		//if start bracket or if operand push to stack 
+		if(IsStartBracket(c) && !IsOperator(c)) 
+		{
+			stack.Push(c); 
+		}
+		
+		//if operator push everything in pre to stack and then add operator
+		else if(pre.Length > 0) 
+		{
+			for(int i=pre.Length -1; i>=0; i--)
+			{
+				stack.Push(pre[i]);
+			}
+			pre.Clear();
+			pre.Append(c);
+		}				
+		//if closing bracket pop everything and append pre 
+		else if(IsCloseBracket(c))
+		{
+			while(!stack.IsEmpty())
+			{
+				pre.Append(stack.Pop()); 
+			}			
+		}
+		else 
+		{
+			pre.Append(c);
+		}
 	}
+	while(!stack.IsEmpty())
+	{
+		pre.Append(stack.Pop());
+	}
+	return pre.ToString();
 }
-
+public bool IsOperator(char c)
+{
+	bool yes = false;
+	switch (c)
+	{
+		case '+': case '-': case '*': case '/': 
+		yes = true; 
+		break;		
+	}
+	return yes;
+}
+public bool IsStartBracket(char c)
+{
+	return c == '(';
+}
+public bool IsCloseBracket(char c)
+{
+	return c == ')';
+}
 
 public void MyStackTest()
 {
